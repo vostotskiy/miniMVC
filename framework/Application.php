@@ -29,9 +29,11 @@ class Application implements FrontControllerInterface
      * Init app environment, like DB instance
      */
     public function bootstrap(){
+    $registry  = Registry::getInstance();
 
 
 
+    return $this;
     }
 
 
@@ -39,7 +41,6 @@ class Application implements FrontControllerInterface
      *
      */
     public function run() {
-
     }
 
 }

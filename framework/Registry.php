@@ -7,8 +7,9 @@
  */
 
 namespace Framework;
+use ArrayAccess;
 
-class Registry {
+class Registry implements ArrayAccess {
     private $registry = array();
     private static $instance = null;
     public static function getInstance() {
@@ -37,5 +38,32 @@ class Registry {
 //$mysqli->connect('localhost', 'mini_mvc', 'root', '');
 //$registry = Registry::getInstance();
 //$registry->set('mysqli', $mysqli);
+
+    function offsetExists($offset) {
+
+        return isset($this->vars[$offset]);
+
+    }
+
+
+    function offsetGet($offset) {
+
+        return $this->get($offset);
+
+    }
+
+
+    function offsetSet($offset, $value) {
+
+        $this->set($offset, $value);
+
+    }
+
+
+    function offsetUnset($offset) {
+
+        unset($this->vars[$offset]);
+
+    }
 
 }

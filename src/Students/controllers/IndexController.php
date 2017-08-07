@@ -15,7 +15,11 @@ class IndexController extends BaseController
 {
 
     public function indexAction(){
-        die('index action of index ctrl');
+        //die('index action of index ctrl');
+
+        $this->render('index',[
+            'name' => '134'
+        ]);
     }
 
     public function editAction($id){

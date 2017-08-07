@@ -56,7 +56,9 @@ class Application implements FrontControllerInterface
      */
     public function run() {
         $router = new Router($this->config['routes'],$this->config['default_route'],$this->registry);
+        $this->registry['router'] = $router;
         $router->dispatch($this->registry['request']->getUrl());
+
 
 
 

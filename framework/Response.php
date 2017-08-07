@@ -11,11 +11,40 @@ namespace Framework;
 
 class Response
 {
-    public function __construct() {
+    protected $body;
+    protected $headers;
+    protected $statusCode;
+    private static $httpCodes = [
+        200 => "OK",
+        304 => "Not Modified",
+        403 => "Forbidden",
+        404 => "Not Found"
+    ];
 
+    public function __construct($statusCode = 200, $headers = array(), $body = null)
+    {
+        $this->statusCode = $statusCode;
+        $this->body = $body;
+        $this->headers = $headers;
     }
 
+    public function setStatusCode($code)
+    {
+        $this->statusCode = $code;
+        return $this;
+    }
 
+    public function setHeader($header, $value)
+    {
+        $this->headers[$header] = $value;
+        return $this;
+    }
+
+    public function setBody($body)
+    {
+        $this->body = $body;
+        return $this;
+    }
     public function addHeader($header) {
         $this->headers[] = $header;
         return $this;
@@ -32,11 +61,14 @@ class Response
         return $this->headers;
     }
 
-    public function send() {
-        if (!headers_sent()) {
-            foreach($this->headers as $header) {
-                header("$this->version $header", true);
-            }
+    public function send()
+    {
+        header("HTTP/1.1 {$this->statusCode} " . self::$httpCodes[$this->statusCode]);
+        foreach ($this->headers as $header => $value) {
+            header(strtoupper($header).': '.$value);
         }
+        echo $this->body;
     }
+
+
 }

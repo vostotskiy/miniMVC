@@ -28,16 +28,28 @@ Abstract class BaseController
 
     abstract function indexAction();
 
-    public function render($viewName,$params){
+    public function render($viewName, $params)
+    {
         $router = $this->registry['router'];
-        $this->view = new View($router->getModule(),$router->getController(),$params);
-        $renderData =  $this->view->renderTemplate($viewName);
-$this->response = new Response(200,[],$renderData);
-$this->response->send();
-
-
+        $this->view = new View($router->getModule(), $router->getController(), $params);
+        $renderData = $this->view->renderTemplate($viewName);
+        $this->response = new Response(200, [], $renderData);
+        $this->response->send();
 
     }
+
+    /**
+     * Redirect
+     *
+     * @param string $url URL to redirecting
+     * @param string $message Message
+     * @return ResponseRedirect Instance of ResponseRedirect
+     */
+    public function redirect($url, $message = null)
+    {
+//        return new ResponseRedirect($url, $message,);
+    }
+
 
 
 }

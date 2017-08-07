@@ -14,6 +14,30 @@ class Router
     protected $default_route;
     protected $params;
     protected $module;
+
+    /**
+     * @return string module name for current route
+     */
+    public function getModule()
+    {
+        return $this->module;
+    }
+
+    /**
+     * @return string controller name for current route
+     */
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    /**
+     * @return string action name for current route
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
     protected $controller;
     protected $action;
 
@@ -88,10 +112,10 @@ class Router
 
     public function applyRoute($route)
     {
-        $this->controller = ucfirst($route->controller) . "Controller";
+        $this->controller = ucfirst($route->controller);
         $this->module = ucfirst($route->module);
         $this->action = ucfirst($route->action) . "Action";
-        $className = '\\' . $this->module . '\controllers\\' . $this->controller;
+        $className = '\\' . $this->module . '\controllers\\' . $this->controller . "Controller";
         // Check if controller exists
         if (class_exists($className)) {
             $controller = new $className($this->registry);

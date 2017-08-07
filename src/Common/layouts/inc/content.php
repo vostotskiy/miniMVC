@@ -1,0 +1,8 @@
+<div id="main">
+
+    <?= $content ?>
+
+</div>
+
+
+

@@ -7,49 +7,50 @@
  */
 
 namespace Framework;
-
+define('LAYOUT_BASEDIR', dirname(__FILE__). '/../src/Common/layouts');
+define('SRC_BASEDIR', dirname(__FILE__). '/../src');
 
 Class View {
 
-    private $template;
-    private $controller;
-    private $layouts;
-    private $vars = array();
+    protected $template;
+    protected $controller;
+    protected $module;
+    protected $mainLayoutName = 'main';
+    protected $params = array();
 
-    function __construct($layouts, $controllerName) {
-        $this->layouts = $layouts;
-        $arr = explode('_', $controllerName);
-        $this->controller = strtolower($arr[1]);
+    function __construct($module,$controller,$params) {
+        $this->module = $module;
+        $this->controller = $controller;
+        $this->params = $params;
     }
 
-    //set variables for rendering
-    function vars($varname, $value) {
-        if (isset($this->vars[$varname]) == true) {
-            throw new \Exception('Unable to set var `' . $varname . '`. Already set, and overwrite not allowed.');
-            return false;
-        }
-        $this->vars[$varname] = $value;
-        return true;
+
+    protected function fetchPartial($templatePath, $params = array()){
+        extract($params);
+        ob_start();
+        include $templatePath;
+        return ob_get_clean();
     }
 
-    // rendering
-    function view($name) {
-        $pathLayout = SITE_PATH . 'views' . DS . 'layouts' . DS . $this->layouts . '.php';
-        $contentPage = SITE_PATH . 'views' . DS . $this->controller . DS . $name . '.php';
-        if (file_exists($pathLayout) == false) {
-            trigger_error ('Layout `' . $this->layouts . '` does not exist.', E_USER_NOTICE);
-            return false;
-        }
-        if (file_exists($contentPage) == false) {
-            trigger_error ('Template `' . $name . '` does not exist.', E_USER_NOTICE);
-            return false;
-        }
 
-        foreach ($this->vars as $key => $value) {
-            $$key = $value;
+    public function renderTemplate($templateName = '', $layoutName = '')
+    {
+        if (!strlen($templateName)) {
+            throw new \Exception('Empty template name');
         }
+        //template content
+        $templFullPath = SRC_BASEDIR . '/' . $this->module . '/' . 'views/' . lcfirst($this->controller) . '/' . $templateName . '.php';
+        $template = $this->fetchPartial($templFullPath, $this->params);
 
-        include ($pathLayout);
+        //module related layout wrapping
+        if (strlen($layoutName)) {
+            $layoutFullPath = SRC_BASEDIR . '/' . $this->module . '/' . 'layouts/' . $layoutName . '.php';
+            $template = $this->fetchPartial($layoutFullPath, ['content' => $template]);
+        }
+        $mainLayoutFullPath = LAYOUT_BASEDIR . '/' . $this->mainLayoutName . '.php';
+        return $this->fetchPartial($mainLayoutFullPath, ['content' => $template]);
+
+
     }
 
 }

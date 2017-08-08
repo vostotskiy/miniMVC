@@ -9,13 +9,15 @@
 namespace Students\Controllers;
 
 use Framework\BaseController;
+use Students\Models\Students;
 
 
 class IndexController extends BaseController
 {
 
     public function indexAction(){
-        //die('index action of index ctrl');
+    $model = new Students();
+
 
         $this->render('index',[
             'name' => '134'

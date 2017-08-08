@@ -18,9 +18,9 @@ class IndexController extends BaseController
     public function indexAction(){
     $model = new Students();
 
-
+    $students = $model->findAll();
         $this->render('index',[
-            'name' => '134'
+            'students' => $students
         ]);
     }
 

@@ -32,7 +32,7 @@ public function __construct()
     public function editAction($id = null){
         //save, update action
         if($this->request->isPost()){
-
+        _d($this->request->postData());
         }
 
         if($id){

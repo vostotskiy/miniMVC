@@ -42,6 +42,9 @@ class Request
     public function isPost(){
         return ($this->method === self::METHOD_POST);
     }
+    public function postData(){
+        return $this->_post;
+    }
 
     public function isGet(){
         return ($this->method === self::METHOD_GET);

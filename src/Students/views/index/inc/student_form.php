@@ -24,7 +24,7 @@
                             <input class="input-md emailinput form-control" value="<?=$student->email;?>"  name="email" placeholder="Email address" style="margin-bottom: 10px" type="email" />
                         </div>
                     </div>
-                    <div id="div_id_password1" class="form-group required">
+                    <div class="form-group required">
                         <label for="date_of_birth" class="control-label col-md-4  requiredField">Date of birth<span class="asteriskField">*</span> </label>
                         <div class="controls col-md-8 ">
                             <input class="input-md textinput textInput form-control" value="<?=$student->date_of_birth;?>" name="date_of_birth" placeholder="Create a password" style="margin-bottom: 10px" type="date" />

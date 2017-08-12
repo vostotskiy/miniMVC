@@ -23,6 +23,11 @@ Class View {
         $this->controller = $controller;
         $this->params = $params;
     }
+    public function _partial($templatePath, $params = array()){
+        $path = SRC_BASEDIR . '/' . $this->module . '/' . 'views/' . lcfirst($this->controller) . '/' . $templatePath;
+        extract($params);
+         include ($path);
+    }
 
 
     protected function fetchPartial($templatePath, $params = array()){

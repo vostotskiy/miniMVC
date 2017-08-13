@@ -69,7 +69,7 @@ public function __construct()
         if (!$student) {
             throw new \Exception("No record found with given id= $id");
         }
-        $this->render('edit', [
+        $this->render('view', [
                 'student' => $student
             ]
         );

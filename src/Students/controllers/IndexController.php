@@ -75,10 +75,16 @@ public function __construct()
         );
     }
     public function deleteAction($id){
-        if($id) {
-            _d("id=$id for delete action");
+        //@todo filter id
+        if(!$id) {
+            throw new \Exception("No record found with given id= $id");
         }
-        else _d('view action');
+        $student = $this->model->findById($id);
+
+        if($student->delete()){
+            $this->redirect('/');
+        }
+
     }
 
 }

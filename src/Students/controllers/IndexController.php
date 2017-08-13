@@ -54,7 +54,7 @@ public function __construct()
                 ]
             );
         }else{
-            $this->render('create', [
+            $this->render('edit', [
                     'student' => $this->model
                 ]
             );

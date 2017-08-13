@@ -166,9 +166,10 @@ abstract class ActiveRecord
      */
     public function save()
     {
+
         try
         {
-            if(array_key_exists($this->id_name, $this->attributes))
+            if((array_key_exists($this->id_name, $this->attributes)) && ($this->attributes[$this->id_name]))
             {
                 $attributes = $this->attributes;
                 unset($attributes[$this->id_name]);

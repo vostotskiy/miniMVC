@@ -21,13 +21,13 @@
                     <div  class="form-group required">
                         <label for="email" class="control-label col-md-4  requiredField"> E-mail<span class="asteriskField">*</span> </label>
                         <div class="controls col-md-8 ">
-                            <input class="input-md emailinput form-control" value="<?=$student->email;?>"  name="email" placeholder="Email address" style="margin-bottom: 10px" type="email" />
+                            <input class="input-md emailinput form-control" value="<?=$student->email;?>"  name="email" placeholder="Email address" style="margin-bottom: 10px" type="email" required/>
                         </div>
                     </div>
                     <div class="form-group required">
                         <label for="date_of_birth" class="control-label col-md-4  requiredField">Date of birth<span class="asteriskField">*</span> </label>
                         <div class="controls col-md-8 ">
-                            <input class="input-md textinput textInput form-control" value="<?=$student->date_of_birth;?>" name="date_of_birth" placeholder="Create a password" style="margin-bottom: 10px" type="date" />
+                            <input class="input-md textinput textInput form-control" value="<?=$student->date_of_birth;?>" name="date_of_birth" placeholder="Create a password" style="margin-bottom: 10px" type="date" required/>
                         </div>
                     </div>
 
@@ -41,13 +41,13 @@
                     <div  class="form-group required">
                         <label for="faculty" class="control-label col-md-4  requiredField"> Group <span class="asteriskField">*</span> </label>
                         <div class="controls col-md-8 ">
-                            <input class="input-md textinput textInput form-control" value="<?=$student->group_name;?>"  name="group_name" placeholder="group name" style="margin-bottom: 10px" type="text" />
+                            <input class="input-md textinput textInput form-control" value="<?=$student->group_name;?>"  name="group_name" placeholder="group name" style="margin-bottom: 10px" type="text" required/>
                         </div>
                     </div>
                     <div class="form-group required">
                         <label for="faculty" class="control-label col-md-4  requiredField"> Faculty <span class="asteriskField">*</span> </label>
                         <div class="controls col-md-8 ">
-                            <input class="input-md textinput textInput form-control" value="<?=$student->faculty_name;?>" name="faculty_name" placeholder="faculty name" style="margin-bottom: 10px" type="text" />
+                            <input class="input-md textinput textInput form-control" value="<?=$student->faculty_name;?>" name="faculty_name" placeholder="faculty name" style="margin-bottom: 10px" type="text" required/>
                         </div>
                     </div>
                     <div class="form-group">

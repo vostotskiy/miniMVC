@@ -34,3 +34,15 @@ footer {
         height: auto;
     }
 }
+    input:invalid
+    {
+        border-color:hsl(0, 50%, 50%);
+        background:hsl(0, 50%, 90%);
+    }
+
+    .hidden {
+        display: none;
+    }
+    .navbar {
+        margin-bottom: 20px;
+    }

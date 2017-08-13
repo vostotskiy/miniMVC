@@ -1,7 +1,6 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Vitalik
- * Date: 07.08.2017
- * Time: 18:31
- */
+<div class="container">
+    <div class="row">
+        <h2>View student #<?= $student->id?> data</h2>
+        <?php $this->_partial("inc/student_form.php", ['student' => $student, 'isView' => true]) ?>
+    </div>
+</div>

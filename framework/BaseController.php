@@ -42,12 +42,11 @@ Abstract class BaseController
      * Redirect
      *
      * @param string $url URL to redirecting
-     * @param string $message Message
-     * @return ResponseRedirect Instance of ResponseRedirect
      */
-    public function redirect($url, $message = null)
+    public function redirect($url)
     {
-//        return new ResponseRedirect($url, $message,);
+        Response::redirect($url);
+
     }
 
 

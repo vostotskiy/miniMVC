@@ -70,5 +70,10 @@ class Response
         echo $this->body;
     }
 
+    public static function redirect($url){
+        header("Location: $url", 301);
+        exit();
+    }
+
 
 }

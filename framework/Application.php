@@ -1,7 +1,5 @@
 <?php
-/**
 
- */
 
 namespace Framework;
 use PDO;
@@ -9,17 +7,26 @@ use Framework\Registry;
 use Framework\Router;
 use Framework\Request;
 
+/**
+ * Class Application is aimed to keep all MVC parts together
+ * @package Framework
+ */
 class Application implements FrontControllerInterface
 {
 
  /*
   * @var Framework\Registry $registry
+  * Registry object to keep applications services and settings instances
   */
- protected  $registry;
     /**
+     * @var \Framework\Registry
+     */
+    protected  $registry;
+    /**
+     * array of application configurations
      * @var array|mixed
      */
-    protected $config       = array();
+    protected $config     = array();
 
 
     /**
@@ -39,7 +46,7 @@ class Application implements FrontControllerInterface
     }
 
     /**
-     * Init app environment, like DB instance
+     * Init app environment, create main services instances
      */
     public function bootstrap(){
 
@@ -51,11 +58,9 @@ class Application implements FrontControllerInterface
     }
 
 
-    /**
-     *
-     */
+
     public function run() {
-        $router = new Router($this->config['routes'],$this->config['default_route'],$this->registry);
+        $router = new Router($this->config['routes'],$this->config['page_not_found_route'],$this->registry);
         $this->registry['router'] = $router;
         $router->dispatch($this->registry['request']->getUrl());
 

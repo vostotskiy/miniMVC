@@ -11,7 +11,7 @@ class Router
 
     protected $registry;
     protected $routes;
-    protected $default_route;
+    protected $page_not_found_route;
     protected $params;
     protected $module;
 
@@ -43,10 +43,10 @@ class Router
 
 
 
-   public function __construct($routes,$default_route,$registry){
+   public function __construct($routes,$page_not_found_route,$registry){
        $this->registry = $registry;
 
-       $this->default_route = new Route($default_route);
+       $this->page_not_found_route = new Route($page_not_found_route);
        foreach ($routes as $route){
            $this->routes[] = new Route($route);
        }
@@ -101,12 +101,12 @@ class Router
 
        }
        if(is_null($cur_route)){
-           //@todo 404 error;
-           die('no router found');
+          $cur_route = $this->page_not_found_route;
+
        }
        $this->params = $this->parseParams($cur_route->pattern,$url);
        $this->applyRoute($cur_route);
-       //$a = new \Students\controllers\IndexController();
+
    }
 
 
@@ -127,7 +127,7 @@ class Router
                     $controller->{$this->action}();
                 }
             } else {
-                //error -no action =>404
+                throw new \Exception("Route configuration error");
             }
 
 

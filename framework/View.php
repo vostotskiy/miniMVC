@@ -9,9 +9,10 @@
 namespace Framework;
 define('LAYOUT_BASEDIR', dirname(__FILE__). '/../src/Common/layouts');
 define('SRC_BASEDIR', dirname(__FILE__). '/../src');
-
+use Framework\Registry;
 Class View {
 
+    protected $registry;
     protected $template;
     protected $controller;
     protected $module;
@@ -22,6 +23,7 @@ Class View {
         $this->module = $module;
         $this->controller = $controller;
         $this->params = $params;
+        $this->registry = Registry::getInstance();
     }
     public function _partial($templatePath, $params = array()){
         $path = SRC_BASEDIR . '/' . $this->module . '/' . 'views/' . lcfirst($this->controller) . '/' . $templatePath;
@@ -52,8 +54,13 @@ Class View {
             $layoutFullPath = SRC_BASEDIR . '/' . $this->module . '/' . 'layouts/' . $layoutName . '.php';
             $template = $this->fetchPartial($layoutFullPath, ['content' => $template]);
         }
+        $flashes = [];
+        if(isset($this->registry['flashes'])){
+            $flashes = $this->registry->flashes;
+            unset($this->registry->flashes);
+        }
         $mainLayoutFullPath = LAYOUT_BASEDIR . '/' . $this->mainLayoutName . '.php';
-        return $this->fetchPartial($mainLayoutFullPath, ['content' => $template]);
+        return $this->fetchPartial($mainLayoutFullPath, ['content' => $template,'flashes'=>$flashes]);
 
 
     }

@@ -28,6 +28,19 @@
 
 <div class="container-fluid text-center">
     <div class="row content">
+<div class ="messages">
+    <div class="container">
+        <div class="row">
+<!--            @todo error messages block position-->
+        <?php foreach($flashes as $flash):?>
+        <div class="alert alert-<?= $flash->class?> alert-dismissable  fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <?= $flash->message?>
+    </div>
+          <?php endforeach;?>
+        </div>
+    </div>
+</div>
         <? include 'inc/content.php'; ?>
     </div>
 </div>

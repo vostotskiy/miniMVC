@@ -10,50 +10,58 @@ namespace Students\Controllers;
 
 use Framework\BaseController;
 use Students\Models\Students;
+use Framework\Flash;
 
 
 class IndexController extends BaseController
 {
-public function __construct()
-{
-    $this->model = new Students();
-    parent::__construct();
+    public function __construct()
+    {
+        $this->model = new Students();
+        parent::__construct();
 
-}
+    }
 
-    public function indexAction(){
-
-    $students = $this->model->findAll();
-        $this->render('index',[
+    public function indexAction()
+    {
+        $students = $this->model->findAll();
+        $this->render('index', [
             'students' => $students
         ]);
     }
 
-    public function editAction($id = null){
-        //save, update action
-        if($this->request->isPost()){
-        $fields = $this->request->postData();
-        $errors =  $this->model->validate($this->request->postData());
-        if($errors){
-            _d($errors);
-            //@todo output errors;
-        } else{
-          if($this->model->fill($fields)->save()){
-              $this->redirect('/');
-          }
-        }
+    public function editAction($id = null)
+    {
+        //save, update actions
+        if ($this->request->isPost()) {
+            $fields = $this->request->postData();
+            $errors = $this->model->validate($this->request->postData());
+            if ($errors) {
+                foreach ($errors as $error) {
+                    $this->setFlash(Flash::FLASH_DANGER, $error);
+                }
+                 return $this->render('edit', [
+                        'student' => $this->model->fill($fields)
+                    ]
+                );
+            } else {
+                if ($this->model->fill($fields)->save()) {
+                    $this->setFlash(Flash::FLASH_SUCCESS, "Student's data has been succesfully saved");
+                    $this->redirect('/');
+                }
+            }
         }
 
-        if($id){
+        if ($id) {
             $student = $this->model->findById($id);
-            if(!$student){
+            if (!$student) {
                 throw new \Exception("No record found with given id= $id");
             }
             $this->render('edit', [
                     'student' => $student
                 ]
             );
-        }else{
+        } else {
             $this->render('edit', [
                     'student' => $this->model
                 ]
@@ -74,14 +82,17 @@ public function __construct()
             ]
         );
     }
-    public function deleteAction($id){
+
+    public function deleteAction($id)
+    {
         //@todo filter id
-        if(!$id) {
+        if (!$id) {
             throw new \Exception("No record found with given id= $id");
         }
         $student = $this->model->findById($id);
 
-        if($student->delete()){
+        if ($student->delete()) {
+            $this->setFlash(Flash::FLASH_SUCCESS, "Record  has been succesfully deleted");
             $this->redirect('/');
         }
 

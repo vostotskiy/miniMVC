@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Vitalik
- * Date: 05.08.2017
- * Time: 20:36
- */
 
 namespace Framework;
 
@@ -19,7 +13,11 @@ class Request
     const METHOD_GET = "GET";
     const METHOD_DELETE = "DELETE";
     const METHOD_PUT = "PUT";
-//request params
+
+
+    private $registry;
+    //request params
+
     private $params;
     private $host;
     private $url;
@@ -36,6 +34,15 @@ class Request
         $this->url = $_SERVER[self::PARAM_REQUEST_URL];
         $this->_post = $_POST;
         $this->_get = $_GET;
+        $this->registry = Registry::getInstance();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $this->registry->flashes = [];
+        if(isset($_SESSION['flashes'])){
+        $this->registry->flashes = $_SESSION['flashes'];
+        unset ($_SESSION['flashes']);
+        }
 
     }
 

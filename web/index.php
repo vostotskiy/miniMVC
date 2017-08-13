@@ -17,6 +17,7 @@ $loader->register();
 // register the base directories for the namespace prefix
 $loader->addNamespace('Framework', __DIR__ . '/../framework');
 $loader->addNamespace('Students', __DIR__ . '/../src/Students');
+$loader->addNamespace('Common', __DIR__ . '/../src/Common');
 $loader->addNamespace('Src', __DIR__ . '/../src');
 $app = new \Framework\Application(Registry::getInstance(),__DIR__.'/../app/config.php');
 $app->bootstrap()->run();

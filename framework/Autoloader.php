@@ -4,6 +4,10 @@
 namespace Framework;
 
 
+/**
+ * Class Autoloader
+ * @package Framework
+ */
 class Autoloader
 {
    /**

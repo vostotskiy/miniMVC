@@ -11,6 +11,7 @@ namespace Framework;
 
 class Response
 {
+    protected $registry;
     protected $body;
     protected $headers;
     protected $statusCode;
@@ -26,6 +27,7 @@ class Response
         $this->statusCode = $statusCode;
         $this->body = $body;
         $this->headers = $headers;
+        $this->registry = Registry::getInstance();
     }
 
     public function setStatusCode($code)
@@ -71,9 +73,15 @@ class Response
     }
 
     public static function redirect($url){
+        $registry = Registry::getInstance();
+
+        if($registry->flashes) {
+            $_SESSION['flashes'] = $registry->flashes;
+        }
         header("Location: $url", 301);
         exit();
     }
+
 
 
 }

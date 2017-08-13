@@ -52,8 +52,9 @@ abstract class ActiveRecord
     public  function toArray(){
         return $this->attributes ? $this->attributes : null;
     }
-    protected function fill($attributes){
+    public function fill($attributes){
         $this->attributes = $attributes;
+        return $this;
     }
 
     public function getAttributes()

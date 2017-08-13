@@ -32,7 +32,16 @@ public function __construct()
     public function editAction($id = null){
         //save, update action
         if($this->request->isPost()){
-        _d($this->request->postData());
+        $fields = $this->request->postData();
+        $errors =  $this->model->validate($this->request->postData());
+        if($errors){
+            _d($errors);
+            //@todo output errors;
+        } else{
+          if($this->model->fill($fields)->save()){
+              $this->redirect('/');
+          }
+        }
         }
 
         if($id){

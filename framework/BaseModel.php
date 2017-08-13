@@ -20,8 +20,13 @@ class BaseModel extends ActiveRecord
                 if(!isset($params[$field])){
                     $errors[] = "Field $field is required";
                 }else{
-
-                    if(!filter_var($params[$field],$props['filter'])){
+                    $isValid = false;
+                    if(isset($props['v_regexp']) && ($props['validate']= FILTER_VALIDATE_REGEXP)){
+                        $isValid = filter_var($params[$field], $props['validate'], array("options" => array("regexp" => $props['v_regexp'])));
+                    } else{
+                        $isValid = filter_var($params[$field],$props['validate']);
+                    }
+                    if(!$isValid ){
                         $errors[] = "Field $field is not valid";
                     }
                 }
@@ -31,5 +36,6 @@ class BaseModel extends ActiveRecord
         return $errors;
 
     }
+    //@todo add filter method to sanitize input
 
 }

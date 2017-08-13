@@ -22,7 +22,7 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Date of birth</th>
-                    <th>Sex</th>
+                    <th>Gender</th>
                     <th>Group</th>
                     <th>Faculty</th>
                     <th colspan="3">Options</th>
@@ -40,8 +40,8 @@
                         <td><?= $student->last_name; ?></td>
                         <td><?= date("D, d M y",strtotime($student->date_of_birth));?></td>
                         <td><?= $student->sex; ?></td>
-                        <td><?= $student->group; ?></td>
-                        <td><?= $student->faculty; ?></td>
+                        <td><?= $student->group_name; ?></td>
+                        <td><?= $student->faculty_name; ?></td>
                         <td>
                             <div class="row" style="display: inline-block; float: none; white-space: nowrap;">
                                 <a href="students/view/<?=$student->id?>" data-toggle="tooltip" data-placement="top" data-title="view" class="btn btn-info">

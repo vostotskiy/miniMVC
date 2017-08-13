@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Vitalik
- * Date: 07.08.2017
- * Time: 19:58
- */
+
 
 namespace Framework;
 
@@ -12,7 +7,10 @@ use Framework\Registry;
 use PDO;
 
 
-
+/**
+ * Class ActiveRecord
+ * @package Framework
+ */
 abstract class ActiveRecord
 {
     /**
@@ -26,52 +24,83 @@ abstract class ActiveRecord
      */
     protected $table_name;
     /**
-     * Username
-     * @var String
-     */
-
-    /**
      * Connection instance
      * @var  String
      */
     protected $connection;
     /**
-     * The database name
+     * primary key field name
      * @var  String
      */
 
     protected $id_name = 'id';
 
+    /**
+     * query variable
+     * @var
+     */
     protected $_query;
 
+    /**
+     * ActiveRecord constructor.
+     */
     function __construct() {
         $registry = Registry::getInstance();
         $this->connection = $registry['db'];
     }
 
+    /**
+     * return model object to associative array with field names and values
+     * @return Array|null
+     */
     public  function toArray(){
         return $this->attributes ? $this->attributes : null;
     }
+
+    /**
+     * fill model attributes by associative array values
+     * @param $attributes
+     * @return $this
+     */
     public function fill($attributes){
         $this->attributes = $attributes;
         return $this;
     }
 
+    /**
+     * get array of attributes(fields)
+     * @return Array
+     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
+    /**
+     * get proper field value
+     * @param $key
+     * @return null
+     */
     public function getAttribute($key)
     {
         return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
+    /**
+     * set proper field value
+     * @param $key
+     * @param $value
+     */
     public function setAttribute($key, $value)
     {
         $this->attributes[$key] = $value;
     }
 
+    /**
+     * getter magic method for fields direct access
+     * @param $key
+     * @return null
+     */
     public function __get($key)
     {
         if (array_key_exists($key, $this->attributes))
@@ -82,11 +111,19 @@ abstract class ActiveRecord
         return null;
     }
 
+    /**setter magic method for fields direct access
+     * @param $key
+     * @param $value
+     */
     public function __set($key, $value)
     {
         $this->setAttribute($key, $value);
     }
 
+    /** check whether field is exist in array of attributes
+     * @param $key
+     * @return bool
+     */
     public function __isset($key)
     {
         return array_key_exists($key, $this->attributes);
@@ -108,6 +145,10 @@ abstract class ActiveRecord
         return ($obj) ? $this->newInstance($obj) : null;
     }
 
+    /**
+     * fetch list of all records from table
+     * @return  ActiveRecord[] $models
+     */
     public function findAll(){
         $conn = $this->getConnection();
         $this->_query = $conn->query("SELECT * FROM {$this->table_name}");
@@ -152,6 +193,11 @@ abstract class ActiveRecord
         return $models;
     }
 
+    /**
+     * create model method that combines constructor and
+     * @param array $data
+     * @return mixed
+     */
     public function newInstance(array $data)
     {
         $class_name = get_class($this);

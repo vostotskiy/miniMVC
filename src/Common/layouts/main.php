@@ -46,10 +46,6 @@
 </div>
 
 <? include 'inc/footer.php'; ?>
-<!--@todo add correct bootstrap link-->
-<script src="/bower_components/jquery/dist/jquery.slim.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
-<script src="/js/utils.js"></script>
+<? include 'inc/bottom_scripts.php'; ?>
 </body>
 </html>

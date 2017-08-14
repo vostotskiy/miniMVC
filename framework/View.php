@@ -100,11 +100,11 @@ Class View
             $layoutFullPath = SRC_BASEDIR . '/' . $this->module . '/' . 'layouts/' . $layoutName . '.php';
             $template = $this->fetchPartial($layoutFullPath, ['content' => $template]);
         }
+
         $flashes = [];
-        if (isset($this->registry['flashes'])) {
-            $flashes = $this->registry->flashes;
-            unset($this->registry->flashes);
-        }
+        $flashes = $this->registry->flashes;
+        unset($this->registry->flashes);
+
         $mainLayoutFullPath = LAYOUT_BASEDIR . '/' . $this->mainLayoutName . '.php';
         return $this->fetchPartial($mainLayoutFullPath, ['content' => $template, 'flashes' => $flashes]);
 

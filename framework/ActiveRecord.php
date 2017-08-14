@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Vitalik
- * Date: 07.08.2017
- * Time: 19:58
- */
+
 
 namespace Framework;
 
@@ -12,7 +7,10 @@ use Framework\Registry;
 use PDO;
 
 
-
+/**
+ * Class ActiveRecord
+ * @package Framework
+ */
 abstract class ActiveRecord
 {
     /**
@@ -26,67 +24,108 @@ abstract class ActiveRecord
      */
     protected $table_name;
     /**
-     * Username
-     * @var String
-     */
-
-    /**
      * Connection instance
      * @var  String
      */
     protected $connection;
     /**
-     * The database name
+     * primary key field name
      * @var  String
      */
 
     protected $id_name = 'id';
 
+    /**
+     * query variable
+     * @var
+     */
     protected $_query;
 
-    function __construct() {
+    /**
+     * ActiveRecord constructor.
+     */
+    function __construct()
+    {
         $registry = Registry::getInstance();
         $this->connection = $registry['db'];
     }
 
-    public  function toArray(){
+    /**
+     * return model object to associative array with field names and values
+     * @return Array|null
+     */
+    public function toArray()
+    {
         return $this->attributes ? $this->attributes : null;
     }
-    public function fill($attributes){
+
+    /**
+     * fill model attributes by associative array values
+     * @param $attributes
+     * @return $this
+     */
+    public function fill($attributes)
+    {
         $this->attributes = $attributes;
         return $this;
     }
 
+    /**
+     * get array of attributes(fields)
+     * @return Array
+     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
+    /**
+     * get proper field value
+     * @param $key
+     * @return null
+     */
     public function getAttribute($key)
     {
         return isset($this->attributes[$key]) ? $this->attributes[$key] : null;
     }
 
+    /**
+     * set proper field value
+     * @param $key
+     * @param $value
+     */
     public function setAttribute($key, $value)
     {
         $this->attributes[$key] = $value;
     }
 
+    /**
+     * getter magic method for fields direct access
+     * @param $key
+     * @return null
+     */
     public function __get($key)
     {
-        if (array_key_exists($key, $this->attributes))
-        {
+        if (array_key_exists($key, $this->attributes)) {
             return $this->getAttribute($key);
         }
 
         return null;
     }
 
+    /**setter magic method for fields direct access
+     * @param $key
+     * @param $value
+     */
     public function __set($key, $value)
     {
         $this->setAttribute($key, $value);
     }
 
+    /** check whether field is exist in array of attributes
+     * @param $key
+     * @return bool
+     */
     public function __isset($key)
     {
         return array_key_exists($key, $this->attributes);
@@ -108,17 +147,20 @@ abstract class ActiveRecord
         return ($obj) ? $this->newInstance($obj) : null;
     }
 
-    public function findAll(){
+    /**
+     * fetch list of all records from table
+     * @return  ActiveRecord[] $models
+     */
+    public function findAll()
+    {
         $conn = $this->getConnection();
         $this->_query = $conn->query("SELECT * FROM {$this->table_name}");
         $objs = $this->_query->fetchAll(PDO::FETCH_ASSOC);
         // the model instantiated
         $models = array();
 
-        if(! empty($objs))
-        {
-            foreach($objs as $obj)
-            {
+        if (!empty($objs)) {
+            foreach ($objs as $obj) {
                 $models[] = $this->newInstance($obj);
             }
         }
@@ -141,10 +183,8 @@ abstract class ActiveRecord
         // the model instantiated
         $models = array();
 
-        if(! empty($objs))
-        {
-            foreach($objs as $obj)
-            {
+        if (!empty($objs)) {
+            foreach ($objs as $obj) {
                 $models[] = $this->newInstance($obj);
             }
         }
@@ -152,6 +192,11 @@ abstract class ActiveRecord
         return $models;
     }
 
+    /**
+     * create model method that combines constructor and
+     * @param array $data
+     * @return mixed
+     */
     public function newInstance(array $data)
     {
         $class_name = get_class($this);
@@ -167,22 +212,16 @@ abstract class ActiveRecord
     public function save()
     {
 
-        try
-        {
-            if((array_key_exists($this->id_name, $this->attributes)) && ($this->attributes[$this->id_name]))
-            {
+        try {
+            if ((array_key_exists($this->id_name, $this->attributes)) && ($this->attributes[$this->id_name])) {
                 $attributes = $this->attributes;
                 unset($attributes[$this->id_name]);
                 $this->update($attributes);
-            }
-            else
-            {
+            } else {
                 $id = $this->insert($this->attributes);
                 $this->setAttribute($this->id_name, $id);
             }
-        }
-        catch(ErrorException $e)
-        {
+        } catch (ErrorException $e) {
             return false;
         }
 
@@ -200,34 +239,29 @@ abstract class ActiveRecord
      */
     protected function prepareStatement($connection, $values, $type)
     {
-        if($type == "insert")
-        {
+        if ($type == "insert") {
             $sql = "INSERT INTO {$this->table_name} (";
             foreach ($values as $key => $value) {
-                $sql.="{$key}";
-                if($value != end($values) )
-                    $sql.=",";
+                $sql .= "{$key}";
+                if ($value != end($values))
+                    $sql .= ",";
             }
-            $sql.=") VALUES(";
+            $sql .= ") VALUES(";
             foreach ($values as $key => $value) {
-                $sql.=":{$key}";
-                if($value != end($values) )
-                    $sql.=",";
+                $sql .= ":{$key}";
+                if ($value != end($values))
+                    $sql .= ",";
             }
-            $sql.=")";
-        }
-        elseif($type == "update")
-        {
+            $sql .= ")";
+        } elseif ($type == "update") {
             $sql = "UPDATE {$this->table_name} SET ";
             foreach ($values as $key => $value) {
-                $sql.="{$key} =:{$key}";
-                if($value != end($values))
-                    $sql.=",";
+                $sql .= "{$key} =:{$key}";
+                if ($value != end($values))
+                    $sql .= ",";
             }
-            $sql.=" WHERE {$this->id_name}=:{$this->id_name}";
-        }
-        else
-        {
+            $sql .= " WHERE {$this->id_name}=:{$this->id_name}";
+        } else {
             throw new InvalidArgumentException("PrepareStatement need to be insert,update or delete");
         }
 
@@ -243,13 +277,12 @@ abstract class ActiveRecord
     {
         $connection = $this->getConnection();
         $statement = $this->prepareStatement($connection, $values, "insert");
-        foreach($values as $key => $value)
-        {
+        foreach ($values as $key => $value) {
             $statement->bindValue(":{$key}", $value);
         }
 
         $success = $statement->execute($values);
-        if(! $success)
+        if (!$success)
             throw new ErrorException;
 
         return $connection->lastInsertId();
@@ -265,25 +298,23 @@ abstract class ActiveRecord
      */
     public function update(array $values)
     {
-        if( ! isset($this->attributes[$this->id_name]))
+        if (!isset($this->attributes[$this->id_name]))
             throw new BadMethodCallException("Cannot call update on an object non already fetched");
 
         $connection = $this->getConnection();
         $statement = $this->prepareStatement($connection, $values, "update");
-        foreach($values as $key => $value)
-        {
+        foreach ($values as $key => $value) {
             $statement->bindValue(":{$key}", $value);
         }
         $statement->bindValue(":{$this->id_name}", $this->attributes[$this->id_name]);
         $success = $statement->execute();
 
         // update the current values
-        foreach($values as $key => $value)
-        {
+        foreach ($values as $key => $value) {
             $this->setAttribute($key, $value);
         }
 
-        if(! $success)
+        if (!$success)
             throw new ErrorException;
 
         return true;
@@ -292,8 +323,9 @@ abstract class ActiveRecord
     /**
      * Deletes the current row if exists
      */
-    public function delete(){
-        if( ! isset($this->attributes[$this->id_name]))
+    public function delete()
+    {
+        if (!isset($this->attributes[$this->id_name]))
             throw new BadMethodCallException("Cannot call delete on an object non already fetched");
 
         $connection = $this->getConnection();

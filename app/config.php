@@ -11,11 +11,12 @@ return [
         'user' => 'root',
         'password' => ''
     ],
-    'default_route' => ['pattern' => '/',
-        'module' => 'Students',
+    'page_not_found_route' => ['pattern' => '/error404',
+        'module' => 'Common',
         'controller' => 'Index',
-        'action' => 'index',
+        'action' => 'error404',
     ],
+
     'routes' => [
         ['pattern' => '/',
             'module' => 'Students',

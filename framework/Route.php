@@ -1,23 +1,33 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Vitalik
- * Date: 06.08.2017
- * Time: 11:08
- */
 
 namespace Framework;
 
 
+/**
+ * Class Route is used to describe route domain
+ * @package Framework
+ */
 class Route
 {
+    /** module's name
+     * @var string
+     */
     public $module;
+    /** controller's name
+     * @var string
+     */
     public $controller;
+    /** regular expression to check current route
+     * @var string
+     */
     public $pattern;
+    /** action's name
+     * @var string
+     */
     public $action;
 
 
-    /**
+    /** get module name
      * @return string
      */
     public function getModule()
@@ -25,7 +35,7 @@ class Route
         return $this->module;
     }
 
-    /**
+    /** set module name
      * @param mixed string
      */
     public function setModule($module)
@@ -33,7 +43,7 @@ class Route
         $this->module = $module;
     }
 
-    /**
+    /** get controller name
      * @return string
      */
     public function getController()
@@ -41,7 +51,7 @@ class Route
         return $this->controller;
     }
 
-    /**
+    /** set controller name
      * @param string $controller
      */
     public function setController($controller)
@@ -49,7 +59,7 @@ class Route
         $this->controller = $controller;
     }
 
-    /**
+    /** get route pattern
      * @return string
      */
     public function getPattern()
@@ -57,7 +67,7 @@ class Route
         return $this->pattern;
     }
 
-    /**
+    /**set route pattern
      * @param string $pattern
      */
     public function setPattern($pattern)
@@ -65,7 +75,7 @@ class Route
         $this->pattern = $pattern;
     }
 
-    /**
+    /**get action
      * @return string
      */
     public function getAction()
@@ -73,7 +83,7 @@ class Route
         return $this->action;
     }
 
-    /**
+    /**set action
      * @param string $action
      */
     public function setAction($action)
@@ -81,6 +91,10 @@ class Route
         $this->action = $action;
     }
 
+    /**
+     * Route constructor.
+     * @param $config
+     */
     public function __construct($config)
     {
         $fields = ['pattern', 'module', 'controller', 'action'];

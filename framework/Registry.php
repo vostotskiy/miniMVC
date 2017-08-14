@@ -56,7 +56,7 @@ class Registry implements ArrayAccess
     public function get($key)
     {
         if (!isset($this->registry[$key])) {
-            throw new Exception("There is no entry for key " . $key);
+            throw new \Exception("There is no entry for key " . $key);
         }
         return $this->registry[$key];
     }

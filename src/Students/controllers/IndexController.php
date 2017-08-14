@@ -57,12 +57,12 @@ class IndexController extends BaseController
             if (!$student) {
                 throw new \Exception("No record found with given id= $id");
             }
-            $this->render('edit', [
+            return $this->render('edit', [
                     'student' => $student
                 ]
             );
         } else {
-            $this->render('edit', [
+            return $this->render('edit', [
                     'student' => $this->model
                 ]
             );
@@ -77,7 +77,7 @@ class IndexController extends BaseController
         if (!$student) {
             throw new \Exception("No record found with given id= $id");
         }
-        $this->render('view', [
+        return $this->render('view', [
                 'student' => $student
             ]
         );

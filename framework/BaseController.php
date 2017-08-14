@@ -1,6 +1,7 @@
 <?php
 
 namespace Framework;
+
 use Framework\Response;
 use Framework\Request;
 use Framework\View;
@@ -37,7 +38,8 @@ Abstract class BaseController
     public $model;
 
 
-    function __construct() {
+    function __construct()
+    {
         $this->registry = Registry::getInstance();
         $this->request = $this->registry['request'];
 
@@ -79,9 +81,8 @@ Abstract class BaseController
         if ((!strlen($class)) && (!strlen($message))) {
             return false;
         }
-        $this->registry->flashes[] = new Flash($class,$message);
+        $this->registry->flashes[] = new Flash($class, $message);
     }
-
 
 
 }
